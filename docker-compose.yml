@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/mentorship
+      - SECRET_KEY=${SECRET_KEY:-dev-secret-key-change-in-production}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      - FLASK_ENV=${FLASK_ENV:-development}
+      - DEBUG=True
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+    networks:
+      - mentora-network
+
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=mentorship
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - mentora-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  mentora-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+    driver: local
+  mongo_config:
+    driver: local

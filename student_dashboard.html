@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Mentora{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1><i class="fas fa-graduation-cap"></i> Student Dashboard</h1>
+            <p class="lead">Explore faculty members and connect for mentorship</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Active Connections</h5>
+                    <h2 class="text-primary">{{ connections_count }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Available Faculty</h5>
+                    <h2 class="text-info">{{ faculty|length }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">My Messages</h5>
+                    <h2 class="text-success">0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">AI Queries</h5>
+                    <h2 class="text-warning">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="mb-4">Available Faculty Members</h3>
+            {% if faculty %}
+                <div class="row">
+                    {% for f in faculty %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 shadow-sm hover-card">
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    <img src="{{ f.profile_picture or 'https://via.placeholder.com/100' }}" 
+                                         alt="{{ f.name }}" class="rounded-circle" width="80" height="80">
+                                </div>
+                                <h5 class="card-title text-center">{{ f.name }}</h5>
+                                <p class="text-muted text-center">{{ f.department }}</p>
+                                {% if f.bio %}
+                                    <p class="card-text small">{{ f.bio[:100] }}...</p>
+                                {% endif %}
+                                {% if f.expertise %}
+                                    <div class="mb-3">
+                                        <strong>Expertise:</strong>
+                                        <div>
+                                            {% for exp in f.expertise[:3] %}
+                                                <span class="badge bg-info">{{ exp }}</span>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <div class="d-grid gap-2">
+                                    <a href="{{ url_for('dashboard.view_faculty', faculty_id=f._id) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> View Profile
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle"></i> No faculty members available yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.hover-card {
+    transition: transform 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

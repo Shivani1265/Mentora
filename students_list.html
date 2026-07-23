@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Students List - Mentora{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4"><i class="fas fa-users"></i> All Students</h1>
+    
+    {% if students %}
+    <div class="row">
+        {% for student in students %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <img src="{{ student.profile_picture or 'https://via.placeholder.com/100' }}" 
+                         alt="{{ student.name }}" class="rounded-circle mb-3" width="100" height="100">
+                    <h5 class="card-title">{{ student.name }}</h5>
+                    <p class="text-muted">{{ student.email }}</p>
+                    <p class="text-muted small">{{ student.department or 'N/A' }}</p>
+                    <a href="{{ url_for('messaging.chat', user_id=student._id) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-comment"></i> Message
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle"></i> No students found.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

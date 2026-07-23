@@ -263,14 +263,3 @@ Contributions are welcome! Please follow these steps:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### License
-
-This project is licensed under the MIT License.
-
-### Support
-
-For support, email support@mentora.com or open an issue on GitHub.
-
----
-
-**Made with ❤️ by the Mentora Team**
